@@ -29,7 +29,12 @@ TODO: Include short and useful examples for package users. Add longer examples
 to `/example` folder.
 
 ```dart
-const like = 'sample';
+ImageColorChangerWidget(
+          assetPath: 'assets/path_to_your_image.png',
+          targetColor: give_color_you_want_to_change,
+          newColor: give_new_color_you_want_to_change,
+          tolerance: give_accordingly,
+        )
 ```
 
 ## Additional information
