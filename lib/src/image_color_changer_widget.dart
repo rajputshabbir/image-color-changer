@@ -14,8 +14,8 @@ class ImageColorChangerWidget extends StatefulWidget {
     required this.targetColor,
     required this.newColor,
     this.tolerance = 100,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   ImageColorChangerWidgetState createState() => ImageColorChangerWidgetState();
@@ -68,15 +68,15 @@ class ImageColorChangerWidgetState extends State<ImageColorChangerWidget> {
 }
 
 extension ImageExtension on ui.Image{
-  Future<ui.Image> changeColor(Color c1, Color c2, int tolerance) async {
+  Future<ui.Image> changeColor({required Color targetColor, required Color newColor, required int tolerance}) async {
     final ByteData? byteData = await toByteData(format: ui.ImageByteFormat.rawRgba);
     final Uint8List data = byteData!.buffer.asUint8List();
 
     /// Target color which you want to change in your image
-    int targetColor = c1.value;
+    int c1 = targetColor.value;
 
     /// New color which you want to replace to target color
-    int newColor = c2.value;
+    int c2 = newColor.value;
 
     for (int i = 0; i < data.length; i += 4) {
       int r = data[i];
@@ -84,10 +84,10 @@ extension ImageExtension on ui.Image{
       int b = data[i + 2];
 
       /// Check if the pixel color is approximately equal to the target color
-      if (_approximateColor(r, g, b, targetColor)) {
-        data[i] = (newColor >> 16) & 0xFF; // Red
-        data[i + 1] = (newColor >> 8) & 0xFF; // Green
-        data[i + 2] = newColor & 0xFF; // Blue
+      if (_approximateColor(r, g, b, c1)) {
+        data[i] = (c2 >> 16) & 0xFF; // Red
+        data[i + 1] = (c2 >> 8) & 0xFF; // Green
+        data[i + 2] = c2 & 0xFF; // Blue
       }
     }
 
