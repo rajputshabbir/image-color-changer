@@ -68,10 +68,9 @@ class ImageColorChangerWidgetState extends State<ImageColorChangerWidget> {
 }
 
 extension ImageExtension on ui.Image{
-  Future<ui.Image> changeColor(int targetColor, int newColor, int tolerance) async {
-    final ByteData? byteData = await toByteData(format: ui.ImageByteFormat.rawRgba);
+  Future<ui.Image> changeColor(int targetColor, int newColor, int tolerance, ui.Image image) async {
+    final ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.rawRgba);
     final Uint8List data = byteData!.buffer.asUint8List();
-
 
     // /// Target color which you want to change in your image
     // int targetColor = targetColor;
@@ -93,7 +92,7 @@ extension ImageExtension on ui.Image{
     }
 
     final ui.ImmutableBuffer buffer = await ui.ImmutableBuffer.fromUint8List(data);
-    final ui.ImageDescriptor descriptor = ui.ImageDescriptor.raw(buffer, width: width, height: height, pixelFormat: ui.PixelFormat.rgba8888);
+    final ui.ImageDescriptor descriptor = ui.ImageDescriptor.raw(buffer, width: image.width, height: image.height, pixelFormat: ui.PixelFormat.rgba8888);
     final ui.Codec codec = await descriptor.instantiateCodec();
     final ui.FrameInfo frameInfo = await codec.getNextFrame();
     return frameInfo.image;
